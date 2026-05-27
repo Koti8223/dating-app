@@ -1,0 +1,29 @@
+{
+  "project_info": {
+    "project_number": "924262814822",
+    "project_id": "frnd-app-8c401",
+    "storage_bucket": "frnd-app-8c401.firebasestorage.app"
+  },
+  "client": [
+    {
+      "client_info": {
+        "mobilesdk_app_id": "1:924262814822:android:e121392971a524bffbc9a7",
+        "android_client_info": {
+          "package_name": "com.example.frnd_app"
+        }
+      },
+      "oauth_client": [],
+      "api_key": [
+        {
+          "current_key": "AIzaSyDJMhtw_DnuhzYDqfrA88zXHImgfDzMTFE"
+        }
+      ],
+      "services": {
+        "appinvite_service": {
+          "other_platform_oauth_client": []
+        }
+      }
+    }
+  ],
+  "configuration_version": "1"
+}
