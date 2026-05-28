@@ -415,4 +415,76 @@ Below is the exact chronological history of what was implemented, resolved, and 
 
 ---
 
-🎉 **Congratulations! Your development workspace is completely up to date, fully compiled, and ready for Day 5 Swipe & Discovery Feeds! Happy coding!** 🚀
+## 📱 Section 6: Day 5 — Swipe Matchmaking Feed & Discovery Board
+
+In this phase, we implemented the core matchmaking and discovery engine for **FRND**. Users can now browse other profiles, swipe to like or skip, view matching interest tags, and navigate between standard application channels using a bottom navigation bar.
+
+```mermaid
+graph TD
+    A[HomeScreen: InitState] -->|Fetch Discovery Feed| B[FirestoreService: getUsersForFeed]
+    B -->|Check list of Users| C{Is list empty?}
+    C -->|Yes| D[Display Empty State: Invite Friends]
+    C -->|No| E[Load Current User Profile Card]
+    E -->|Tap Skip/Like| F{Action?}
+    F -->|Like| G[FirestoreService: likeUser]
+    F -->|Skip| H[FirestoreService: skipUser]
+    G -->|Increment Profile Index| I{No More Profiles?}
+    H -->|Increment Profile Index| I
+    I -->|Yes| J[Display No More Users Screen: Refresh option]
+    I -->|No| E
+```
+
+---
+
+### 🛠️ Step-by-Step Feature Implementation & Troubleshooting
+
+Below is the exact chronological history of what was implemented, resolved, and verified in your codebase on Day 5:
+
+#### STEP 1 — Create Color Constants File (Phase 1)
+* **Created File**: [app_colors.dart](file:///E:/frnd/frnd_app/lib/constants/app_colors.dart)
+* **Purpose**: Defined the central branding design system, storing matching pink and coral gradients (`primary` at `0xFFFF4D6D` and `secondary` at `0xFFFF8C69`), neutral text greys, and light background canvas colors.
+
+#### STEP 2 — Update Firestore Service Queries (Phase 2)
+* **Modified File**: [firestore_service.dart](file:///E:/frnd/frnd_app/lib/services/firestore_service.dart)
+* **Added Methods**:
+  * `getUsersForFeed()`: Queries Firestore, fetching up to 20 profiles while excluding the logged-in user to populate the feed.
+  * `likeUser(currentUid, likedUid)`: Writes a matching action record under `/users/{currentUid}/likes/{likedUid}`.
+  * `skipUser(currentUid, skippedUid)`: Writes a matching skip record under `/users/{currentUid}/skips/{skippedUid}`.
+
+#### STEP 3 — Construct Premium Profile Card Widget (Phase 3)
+* **Created File**: [profile_card.dart](file:///E:/frnd/frnd_app/lib/widgets/profile_card.dart)
+* **Visual Components**:
+  * **Image Cache Engine**: Integrated `CachedNetworkImage` with custom loaders and profile icon error fallbacks to keep visual data lightweight.
+  * **Gradient Bottom Vignette**: A custom black overlay gradient ensuring high readability of profile typography.
+  * **Profile Details Layout**: Renders name, age, and a gender indicator badge dynamically alongside user bio and up to 3 interest tags.
+  * **Floating Action Triggers**: Stylish circular floating buttons for Like, Skip, and Mic (Voice Call) with shadows.
+
+#### STEP 4 — Implement Swipe Discover Feed Dashboard (Phase 4)
+* **Modified File**: [home_screen.dart](file:///E:/frnd/frnd_app/lib/screens/home/home_screen.dart)
+* **Dashboard Features**:
+  * **App Header Bar**: Houses branding logo (`FRND 💕`), a custom coin wallet display (pre-loaded with 20 coins), and notification controls.
+  * **Onboarding Loading state**: Visual progress indicator when retrieving profiles.
+  * **Empty Feed Page**: Built a clean fallback screen requesting the user to invite friends when no profiles exist.
+  * **Out-of-Profiles Screen**: Integrated a celebration screen with a refresh action to reload available profiles.
+  * **Bottom Navigation Rail**: Features structured paths for Home, Voice, Chat, Wallet, and Profile channels.
+
+#### STEP 5 — Automated Smoke Test Verification & Compile (Phase 5)
+* **Action**: Re-routed and modernized `test/widget_test.dart` to verify the entry widget `FrndApp` instead of the default templated class, ensuring successful unit compilation.
+* **Verification**: Ran `flutter analyze` ensuring zero compiler errors exist in the workspace!
+* **Device Launch**: Deployed the finished matchmaking feed directly to the connected physical **Vivo V2250** phone using `flutter run` for real-device testing!
+
+---
+
+### 📖 Concept Glossary: What You Learned Today
+
+* **`LinearGradient`**: A Dart painting class used to interpolate colors across a straight line. Perfect for designing luxury swipe action triggers and background panels.
+* **`where()` Firestore Query**: A query constraint that filters specific documents. We used `.where('uid', isNotEqualTo: currentUid)` to ensure users do not see or swipe on their own profile.
+* **`CachedNetworkImage`**: An advanced widget that automatically downloads image files from network URLs, saves them directly into the phone's cache directory, and avoids redundant network downloads.
+* **`BoxShadow`**: CSS-like paint properties in Flutter that define color, blur radius, and offset offsets to give buttons and panels a floating visual sensation.
+* **`SafeArea`**: A utility layout wrapper that detects notch layouts, camera cutouts, and status bars, inserting automatic padding so your top headers are never clipped.
+* **`Wrap` vs `Row`**: A standard `Row` crashes with a pixel overflow error if elements exceed the screen boundary. `Wrap` solves this by automatically wrapping tags onto subsequent lines.
+
+---
+
+🎉 **Congratulations! Your development workspace is completely up to date, fully compiled, and ready for advanced matching, text chatting, and real-time audio rooms! Happy coding!** 🚀
+
