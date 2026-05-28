@@ -4,6 +4,7 @@ import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:firebase_auth/firebase_auth.dart';
 import '../../services/auth_service.dart';
 import '../profile/profile_setup_screen.dart';
+import '../home/home_screen.dart';
 
 class OtpScreen extends StatefulWidget {
   final String phoneNumber;
@@ -68,7 +69,7 @@ class _OtpScreenState extends State<OtpScreen> {
             // Returning user -> Navigate straight to Home
             Navigator.pushAndRemoveUntil(
               context,
-              MaterialPageRoute(builder: (_) => const PlaceholderHomeScreen()),
+              MaterialPageRoute(builder: (_) => const HomeScreen()),
               (route) => false,
             );
           } else {

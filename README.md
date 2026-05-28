@@ -341,4 +341,78 @@ Below is the exact chronological history of what was implemented, resolved, and 
 
 ---
 
-🎉 **Congratulations! Your development workspace is completely up to date, fully compiled on your phone, and ready for advanced social features! Happy coding!** 🚀
+## 📱 Section 5: Day 4 — Advanced Profile Setup with Image Uploads & User Profiling
+
+In this phase, we completed the full onboarding experience for **FRND**, building active image selection bottom sheets, photo uploads to Firebase Cloud Storage, complete database document creation in Firestore, and navigation routing to your new feed dashboard.
+
+```mermaid
+graph TD
+    A[PhoneLoginScreen / OtpScreen] -->|Verified Success & Profile Missing| B[ProfileSetupScreen]
+    B -->|Tap Photo Avatar| C[showModalBottomSheet]
+    C -->|Choose Camera / Gallery| D[ImagePicker: Pick Image]
+    B -->|Fills Form: Name, Age, Gender, Bio, Interests| E[Tap Continue]
+    E -->|Upload Image File| F[StorageService: uploadProfilePhoto]
+    F -->|Return downloadUrl| G[UserModel: Create Map schema]
+    G -->|Write User Document to Cloud| H[FirestoreService: saveUserProfile]
+    H -->|Sign up Complete| I[HomeScreen: Empty Placeholder Feed]
+```
+
+---
+
+### 🛠️ Step-by-Step Feature Implementation & Troubleshooting
+
+Below is the exact chronological history of what was implemented, resolved, and verified in your codebase on Day 4:
+
+#### STEP 1 — Dependencies & Pubspec Check (Phase 1)
+* **Action**: Opened `pubspec.yaml` and confirmed that `image_picker: ^1.1.2`, `cloud_firestore: ^5.1.0`, and `firebase_storage: ^12.1.0` exist.
+* **Action**: Executed `flutter pub get` in the terminal to resolve all packages.
+
+#### STEP 2 — Android Hardware Permissions Added (Phase 2)
+* **Action**: Opened `android/app/src/main/AndroidManifest.xml` and added hardware permissions above the `<application>` tag:
+  * 📸 **`android.permission.CAMERA`**: Grants the app access to capture fresh selfies using the phone's camera.
+  * 📁 **`android.permission.READ_EXTERNAL_STORAGE`**: Allows the app to pick photos from the gallery.
+  * 💾 **`android.permission.WRITE_EXTERNAL_STORAGE`**: Allows caching selected images.
+  * 🌐 **`android.permission.INTERNET`**: Opens the network pipeline to transmit images to Firebase.
+
+#### STEP 3 — User Model Blueprint Formed (Phase 3)
+* **Created File**: [user_model.dart](file:///E:/frnd/frnd_app/lib/models/user_model.dart)
+* **Purpose**: Declared the object-oriented structure for a single User in our dating app, including `uid`, `name`, `age`, `gender`, `phoneNumber`, `photoUrl`, `interests` list, `coinsBalance` (now starts at 20 coins), and `bio` description. Includes `toMap()` and `fromMap()` mapping utilities.
+
+#### STEP 4 — Cloud Database Service Created (Phase 4)
+* **Created File**: [firestore_service.dart](file:///E:/frnd/frnd_app/lib/services/firestore_service.dart)
+* **Purpose**: Wrote the cloud database logic including saving profiles (`saveUserProfile`), retrieving profiles (`getUserProfile`), and checking if a user exists in the Firestore database (`userProfileExists`).
+
+#### STEP 5 — Cloud Storage File Upload Service Created (Phase 5)
+* **Created File**: [storage_service.dart](file:///E:/frnd/frnd_app/lib/services/storage_service.dart)
+* **Purpose**: Formed the Firebase Storage interface. Takes a raw local image file, uploads it to `/profile_photos/{uid}.jpg`, sets metadata to `image/jpeg` to optimize storage size, and returns the public file download link.
+
+#### STEP 6 — Advanced Onboarding Interface Completed (Phase 6)
+* **Created File**: [profile_setup_screen.dart](file:///E:/frnd/frnd_app/lib/screens/profile/profile_setup_screen.dart)
+* **Features Designed**:
+  * **Interactive CircleAvatar**: Tapping it pops up a stylish bottom sheet asking to capture a new photo with the **Camera** or select from the **Gallery**.
+  * **Interactive Slider**: A smooth pink age selector slider ranging from 18 to 40.
+  * **Gender Select Buttons**: Spaced grid buttons to toggle between Male and Female.
+  * **Bio Input**: A multiline character-limited text box (100 character maximum limit).
+  * **Interest Chips**: Spaced wrap tags allowing the selection of matching interests (Music, Gaming, Reading, Fitness, Cricket, etc.).
+
+#### STEP 7 — Empty Discovery Dashboard Formed (Phase 7)
+* **Created File**: [home_screen.dart](file:///E:/frnd/frnd_app/lib/screens/home/home_screen.dart)
+* **Design Features**: A clean, material-centered dashboard welcoming successfully registered users to their Home Feed, preparing the codebase for Day 5 discovery feed implementations.
+
+#### STEP 8 — Onboarding Navigation & Router Cleanup
+* **Action**: Opened `otp_screen.dart`, added `import '../home/home_screen.dart';`, and replaced the deprecated `PlaceholderHomeScreen` navigation target with the completed `HomeScreen` target.
+
+---
+
+### 📖 Concept Glossary: What You Learned Today
+
+* **`ImagePicker` Plugin**: A native bridge library that allows Flutter to request the operating system to open the phone's native camera shutter or gallery view, returning the file path of the selected image.
+* **`Firebase Storage`**: Google's cloud-hosted object storage designed strictly for raw binary files (like photos, audio files, and videos). Unlike Firestore (which stores structured JSON-like text documents), Storage handles heavy binary assets.
+* **`putFile()`**: A stream transfer method inside the Firebase Storage SDK. It takes a local file from your phone's memory and uploads it as a raw byte stream to your Firebase cloud storage bucket.
+* **`getDownloadURL()`**: A Firebase service that generates a secure, publicly accessible HTTPS download link for any uploaded file in Firebase Storage, which is then stored in the user's Firestore document to display their image.
+* **`toMap()` and `fromMap()`**: Serializer utilities in Dart. `toMap()` converts a structured `UserModel` object into a flat map structure to save in Firestore. `fromMap()` takes raw key-value documents from Firestore and converts them back into an object to use in code.
+* **`Slider` & `Wrap` Widgets**: Layout components. `Slider` allows users to drag a handle to pick a number. `Wrap` is an advanced row that automatically wraps child items to the next line when they run out of screen width (perfect for tagging interests!).
+
+---
+
+🎉 **Congratulations! Your development workspace is completely up to date, fully compiled, and ready for Day 5 Swipe & Discovery Feeds! Happy coding!** 🚀
