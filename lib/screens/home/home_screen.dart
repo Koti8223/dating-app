@@ -5,6 +5,7 @@ import '../../services/firestore_service.dart';
 import '../../models/user_model.dart';
 import '../../widgets/profile_card.dart';
 import '../../constants/app_colors.dart';
+import '../chat/chat_list_screen.dart';
 
 class HomeScreen extends StatefulWidget {
   const HomeScreen({super.key});
@@ -123,21 +124,23 @@ class _HomeScreenState extends State<HomeScreen> {
 
             // Main content
             Expanded(
-              child: _isLoading
-                  ? const Center(
-                      child: CircularProgressIndicator(
-                        color: AppColors.primary,
-                      ),
-                    )
-                  : _users.isEmpty
-                      ? _buildEmptyState()
-                      : _currentIndex >= _users.length
-                          ? _buildNoMoreUsers()
-                          : ProfileCard(
-                              user: _users[_currentIndex],
-                              onLike: _onLike,
-                              onSkip: _onSkip,
-                            ),
+              child: _bottomNavIndex == 2
+                  ? const ChatListScreen()
+                  : _isLoading
+                      ? const Center(
+                          child: CircularProgressIndicator(
+                            color: AppColors.primary,
+                          ),
+                        )
+                      : _users.isEmpty
+                          ? _buildEmptyState()
+                          : _currentIndex >= _users.length
+                              ? _buildNoMoreUsers()
+                              : ProfileCard(
+                                  user: _users[_currentIndex],
+                                  onLike: _onLike,
+                                  onSkip: _onSkip,
+                                ),
             ),
           ],
         ),
